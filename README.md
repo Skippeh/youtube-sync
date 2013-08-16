@@ -1,4 +1,4 @@
-youtube-sync
+Youtube Sync
 ============
 
-Temporary description.
+It might have something to do with syncing youtube and watching with other people, but i dno.
