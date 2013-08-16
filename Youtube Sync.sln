@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{528DB61D-F9E5-44FB-A6F2-F103FCD8EF54}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fleck", "Libs\Fleck Websocket Server\Fleck.csproj", "{8B12D929-AFA9-4307-BEFF-2ED0F1070FEE}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "htdocs", "..\..\xampp\htdocs\", "{4260B250-DD79-4571-84D8-4FBA2A85EBFA}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5"
+		Debug.AspNetCompiler.VirtualPath = "/htdocs"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\xampp\htdocs\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\htdocs\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/htdocs"
+		Release.AspNetCompiler.PhysicalPath = "..\..\xampp\htdocs\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\htdocs\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "57002"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{528DB61D-F9E5-44FB-A6F2-F103FCD8EF54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{528DB61D-F9E5-44FB-A6F2-F103FCD8EF54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{528DB61D-F9E5-44FB-A6F2-F103FCD8EF54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{528DB61D-F9E5-44FB-A6F2-F103FCD8EF54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B12D929-AFA9-4307-BEFF-2ED0F1070FEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B12D929-AFA9-4307-BEFF-2ED0F1070FEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B12D929-AFA9-4307-BEFF-2ED0F1070FEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B12D929-AFA9-4307-BEFF-2ED0F1070FEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4260B250-DD79-4571-84D8-4FBA2A85EBFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4260B250-DD79-4571-84D8-4FBA2A85EBFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4260B250-DD79-4571-84D8-4FBA2A85EBFA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{4260B250-DD79-4571-84D8-4FBA2A85EBFA}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
