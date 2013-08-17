@@ -28,9 +28,9 @@ namespace Server
 
 			try
 			{
-				CacheExpireTime = (int)saveFile.Get<long>("CacheExpireTime", 30);
-				PublicRoomsCacheExpireTime = (int)saveFile.Get<long>("PublicRoomsCacheExpireTime", 5);
-				MaxAllowedRoomsBeforeCache = (int)saveFile.Get<long>("MaxAllowedRoomsBeforeCache", 20);
+				CacheExpireTime = (int)saveFile.Get<long>("CacheExpireTime", (long)30);
+				PublicRoomsCacheExpireTime = (int)saveFile.Get<long>("PublicRoomsCacheExpireTime", (long)5);
+				MaxAllowedRoomsBeforeCache = (int)saveFile.Get<long>("MaxAllowedRoomsBeforeCache", (long)20);
 				MyLocation = saveFile.Get<string>("ServerLocation", "ws://YourServerLocation");
 				GoogleAPIKey = saveFile.Get<string>("GoogleAPIKey", "");
 				saveFile.SaveKeyValues();
