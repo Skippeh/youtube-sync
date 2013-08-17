@@ -84,6 +84,11 @@ namespace Server
 			if (savedKeyValues.ContainsKey(key))
 				return (T) savedKeyValues[key];
 
+			if (defaultValue is int ||
+				defaultValue is short ||
+				defaultValue is byte)
+				defaultValue = Convert.ToInt64(defaultValue);
+
 			Set(key, defaultValue);
 			return (T) defaultValue;
 		}
