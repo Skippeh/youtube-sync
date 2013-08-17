@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +24,18 @@ namespace Server
 
 			using (server = new WebSocketServer(Globals.MyLocation))
 			{
-				server.Start(ServerConfig);
+				try
+				{
+					server.Start(ServerConfig);
+				}
+				catch (SocketException ex)
+				{
+					if (ex.ErrorCode == 10048)
+					{
+						Console.WriteLine("Something is already running on this port. Can't start server.");
+						Environment.Exit(1);
+					}
+				}
 
 				while (true)
 				{
