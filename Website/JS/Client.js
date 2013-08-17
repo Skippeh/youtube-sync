@@ -20,7 +20,7 @@
 
 Client.prototype.Connect = function () {
 	console.log("Connecting to master server...");
-	this.socket = new WebSocket("ws://skipcast.no-ip.org:8090");
+	this.socket = new WebSocket(Globals.ServerLocation);
 
 	this.socket.onopen = this.OnOpen;
 	this.socket.onclose = this.OnClose;
