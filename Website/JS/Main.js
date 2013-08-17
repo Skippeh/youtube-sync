@@ -20,7 +20,18 @@ function main()
 
 	$("#videoUrl").watermark("Add video: http://www.youtube.com/watch?v=KvWhXOR5POY");
 
-	//$("#leftSidebar").slideUp(0); // Hide playlist by default
+	// Simulate a cursor blinking in the "Fork me on GitHub" text.
+	var forktext = $("#forktext");
+	forktext.attr("href", Globals.GithubURL);
+	setInterval(function () {
+		var html = forktext.html();
+		if (html.substr(-1) == "_") {
+			forktext.html(html.substring(0, html.length - 1));
+		}
+		else {
+			forktext.html(html + "_");
+		}
+	}, 530);
 
 	$("#chatToggleButton").click(ToggleChatVisibility);
 	$("#playlistToggleButton").click(TogglePlaylistVisibility);
