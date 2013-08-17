@@ -1,4 +1,6 @@
-﻿function PlaylistAdd(title, author, length, videoId, uniqueId, channelImage)
+﻿Playlist = {};
+
+Playlist.Add = function(title, author, length, videoId, uniqueId, channelImage)
 {
 	var playlistEntries = $("#playlistEntries");
 
@@ -13,32 +15,32 @@
 			"<span class=\"videoDetails\">Uploaded by " + author + " " + length + "</span>" +
 		"</div>"
 	);
-}
+};
 
-function PlaylistRemove(uniqueId)
+Playlist.Remove = function(uniqueId)
 {
 	$("#playlistEntry_" + uniqueId).remove();
-}
+};
 
-function PlaylistClear()
+Playlist.Clear = function()
 {
 	$("#playlistEntries").html("");
-}
+};
 
-function PlaylistSetCurrentInfo(title, videoImage, description)
+Playlist.SetCurrentInfo = function(title, videoImage, description)
 {
 	$("#currentVideo").stop().animate({ opacity: "1" }, 500);
 
 	$("#currentVideoTitle").html(title);
 	$("#currentVideoDescription").html(description);
 	$("#currentVideoImage").attr("src", videoImage);
-}
+};
 
-function PlaylistClearCurrentInfo()
+Playlist.ClearCurrentInfo = function()
 {
 	$("#currentVideo").stop().animate({ opacity: "0.5" }, 500);
 
 	$("#currentVideoTitle").html("No video playing");
 	$("#currentVideoDescription").html("");
 	$("#currentVideoImage").attr("src", "Images/noVideoImage.png");
-}
+};

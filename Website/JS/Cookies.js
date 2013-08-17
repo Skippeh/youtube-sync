@@ -1,4 +1,6 @@
-﻿function CookiesSet(name, value)
+﻿Cookies = {};
+
+Cookies.Set = function(name, value)
 {
 	name = encodeURI(name);
 	value = encodeURI(value);
@@ -6,10 +8,10 @@
 	document.cookie = name + "=" + value.replace(/=/g, "&#61;")
 										.replace(/</g, "&lt;")
 										.replace(/>/g, "&gt");
-}
+};
 
 // Code taken from http://www.w3schools.com/js/js_cookies.asp
-function CookiesGet(name, defaultValue)
+Cookies.Get = function(name, defaultValue)
 {
 	if (defaultValue == undefined)
 		defaultValue = "";
@@ -22,7 +24,7 @@ function CookiesGet(name, defaultValue)
 	}
 	if (cStart == -1) {
 		cValue = defaultValue;
-		CookiesSet(name, encodeURI(defaultValue));
+		Cookies.Set(name, encodeURI(defaultValue));
 	}
 	else {
 		cStart = cValue.indexOf("=", cStart) + 1;
@@ -35,9 +37,9 @@ function CookiesGet(name, defaultValue)
 
 	if (decodeURI(cValue) == "")
 	{
-		CookiesSet(name, encodeURI(defaultValue));
+		Cookies.Set(name, encodeURI(defaultValue));
 		return defaultValue;
 	}
 
 	return decodeURI(cValue);
-}
+};

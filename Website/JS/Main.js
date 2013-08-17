@@ -1,5 +1,4 @@
-﻿var client;
-var failTimeout;
+﻿var failTimeout;
 var WindowFocused = true;
 
 function main()
@@ -9,7 +8,7 @@ function main()
 		ShowOverlay("Failed to connect to master server within time limit.");
 		setTimeout(function() {
 			HideOverlay();
-			client.Disconnect();
+			Client.Disconnect();
 		}, 3000);
 	}, 5000);
 
@@ -66,12 +65,12 @@ function main()
 
 		if (event.keyCode && event.keyCode == "38") // Up arrow
 		{
-			$("#chatInputBox").val(ChatGetHistory("up"));
+			$("#chatInputBox").val(Chat.GetHistory("up"));
 			return false;
 		}
 		else if (event.keyCode && event.keyCode == "40") // Down arrow
 		{
-			$("#chatInputBox").val(ChatGetHistory("down"));
+			$("#chatInputBox").val(Chat.GetHistory("down"));
 			return false;
 		}
 
@@ -88,15 +87,13 @@ function main()
 
 	CreateDialogs();
 
-	client = new Client(); // Client connects in the YoutubeApi.js file, after the youtube player has been initialized.
-
 	TextFormatting.Initialize();
 
-	PlaylistClearCurrentInfo();
+	Playlist.ClearCurrentInfo();
 
 	// Set up the youtube player
 	var ytParams = { allowScriptAccess: "always" };
-	var ytAtts = { id: "ytPlayer" };
+	var ytAtts = { id: "YT.Player" };
 	swfobject.embedSWF("http://www.youtube.com/v/QQQQQQQQQQQ?enablejsapi=1&playerapiid=ytPlayer&version=3&autohide=1&fs=0", "ytPlayerDiv", "100%", "100%", "8", null, null, ytParams, ytAtts);
 
 	$(window).focus(function() {
@@ -159,7 +156,7 @@ function ToggleChatVisibility()
 	}
 
 	// Scroll the chat to the bottom because the scroll position is reset when the div is hidden.
-	ChatScrollToBottom();
+	Chat.ScrollToBottom();
 }
 
 function TogglePlaylistVisibility()
@@ -238,7 +235,7 @@ function ShowOverlay(text, color)
 
 	$("#overlay").fadeIn("slow");
 
-	YTPause(); // Pause the player when overlay is opened.
+	YT.Pause(); // Pause the player when overlay is opened.
 }
 
 function HideOverlay()
@@ -249,17 +246,17 @@ function HideOverlay()
 function SubmitChat()
 {
 	var text = $("#chatInputBox").val();
-	ChatClearInput();
+	Chat.ClearInput();
 
 	text = $.trim(text);
 
 	if (text == "")
 		return;
 
-	ChatAddHistory(text);
-	ChatResetHistoryPos();
+	Chat.AddHistory(text);
+	Chat.ResetHistoryPos();
 
-	window.client.Send(
+	Client.Send(
 		{
 			intent: "chat",
 			message: text
@@ -274,7 +271,7 @@ function SubmitVideo()
 	if (url == "")
 		return;
 	
-	if (!YTCheckURL(url))
+	if (!YT.CheckURL(url))
 	{
 		SetVideoURLError("Invalid video ID.");
 		return;
@@ -284,7 +281,7 @@ function SubmitVideo()
 	if (isNaN(startTime))
 		startTime = 0;
 
-	window.client.Send(
+	Client.Send(
 		{
 			intent: "addVideo",
 			id: queryString("v", url),
@@ -373,12 +370,12 @@ function CreateDialogs()
 
 	$("#settingsSaveButton").click(SaveSettings);
 
-	$("#settingsNameBox").val(CookiesGet("name", "Unnamed"));
-	$("#settingsDefaultRoomBox").val(CookiesGet("room", ""));
-	$("#settingsMaxDesync").val(CookiesGet("MaxDesync", "3"));
-	$("#settingsPreferredQuality").val(YTGetQuality());
-	$("#settingsPlayChatSounds").prop("checked", CookiesGet("ChatSounds", "1") == "1");
-	$("#settingsShowChatNotifications").prop("checked", CookiesGet("ChatNotifications", "1") == "1");
+	$("#settingsNameBox").val(Cookies.Get("name", "Unnamed"));
+	$("#settingsDefaultRoomBox").val(Cookies.Get("room", ""));
+	$("#settingsMaxDesync").val(Cookies.Get("MaxDesync", "3"));
+	$("#settingsPreferredQuality").val(YT.GetQuality());
+	$("#settingsPlayChatSounds").prop("checked", Cookies.Get("ChatSounds", "1") == "1");
+	$("#settingsShowChatNotifications").prop("checked", Cookies.Get("ChatNotifications", "1") == "1");
 	
 	// ----------------------------------------------- Rooms
 	$("#roomsDialog").dialog(
@@ -394,7 +391,7 @@ function CreateDialogs()
 		$("#roomsDialog").dialog("open");
 		$(".ui-dialog :button").blur();
 
-		RoomListUpdate();
+		RoomList.Update();
 	});
 	
 	// ----------------------------------------------- Room settings
@@ -408,28 +405,28 @@ function CreateDialogs()
 		});
 
 	$("#roomSettingsButton").click(function() {
-		if (client.Owner)
+		if (Client.Owner)
 			$("#roomSettingsDialog").dialog("open");
 	});
 }
 
 function SaveSettings()
 {
-	CookiesSet("name", $("#settingsNameBox").val());
-	CookiesSet("room", $("#settingsDefaultRoomBox").val());
-	CookiesSet("quality", $("#settingsPreferredQuality").val());
-	CookiesSet("MaxDesync", $("#settingsMaxDesync").val());
-	CookiesSet("ChatSounds", $("#settingsPlayChatSounds").prop("checked") == true ? "1" : "0");
-	CookiesSet("ChatNotifications", $("#settingsShowChatNotifications").prop("checked") == true ? "1" : "0");
+	Cookies.Set("name", $("#settingsNameBox").val());
+	Cookies.Set("room", $("#settingsDefaultRoomBox").val());
+	Cookies.Set("quality", $("#settingsPreferredQuality").val());
+	Cookies.Set("MaxDesync", $("#settingsMaxDesync").val());
+	Cookies.Set("ChatSounds", $("#settingsPlayChatSounds").prop("checked") == true ? "1" : "0");
+	Cookies.Set("ChatNotifications", $("#settingsShowChatNotifications").prop("checked") == true ? "1" : "0");
 	
-	if (webkitNotifications.checkPermission() == 1 && CookiesGet("ChatNotifications") == "1")
+	if (webkitNotifications.checkPermission() == 1 && Cookies.Get("ChatNotifications") == "1")
 	{
 		webkitNotifications.requestPermission();
 		console.log("Requesting webkit notification permission.");
 	}
 
-	if (client.ClientName != $("#settingsNameBox").val())
-		client.Send({ intent: "chat", message: "/name " + $("#settingsNameBox").val() });
+	if (Client.ClientName != $("#settingsNameBox").val())
+		Client.Send({ intent: "chat", message: "/name " + $("#settingsNameBox").val() });
 
 	$("#settingsDialog").dialog("close");
 }

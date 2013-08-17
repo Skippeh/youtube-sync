@@ -1,110 +1,96 @@
-﻿var Client = (function()
-{
-	var socket;
-	var Connected;
-	var Owner;
-	var Privileged;
-	var ClientName = "Unnamed";
-	var RoomName = null;
-	var ID = null;
+﻿var Client = {};
 
-	var CurrentVideoID = null;
-	var CurrentUniqueID = null;
-	var CurrentVideoState = -1;
+Client.socket = null;
+Client.Connected = false;
+Client.Owner = false;
+Client.Privileged = false;
+Client.ClientName = "Unnamed";
+Client.RoomName = null;
+Client.ID = null;
 
-	function Client()
-	{
-		
-	}
-});
+Client.CurrentVideoID = null;
+Client.CurrentUniqueID = null;
+Client.CurrentVideoState = -1;
 
-Client.prototype.Connect = function () {
+Client.Connect = function () {
 	console.log("Connecting to master server...");
-	this.socket = new WebSocket(Globals.ServerLocation);
+	Client.socket = new WebSocket(Globals.ServerLocation);
 
-	this.socket.onopen = this.OnOpen;
-	this.socket.onclose = this.OnClose;
-	this.socket.onmessage = this.OnMessage;
-	this.socket.onerror = this.OnError;
+	Client.socket.onopen = function (event) { Client.OnOpen(event); };
+	Client.socket.onclose = function (event) { Client.OnClose(event); };
+	Client.socket.onmessage = function (event) { Client.OnMessage(event); };
+	Client.socket.onerror = function (event) { Client.OnError(event); };
 };
 
-Client.prototype.Disconnect = function()
-{
-	if (this.socket)
-	{
-		try
-		{
-			this.socket.close();
+Client.Disconnect = function () {
+	if (Client.socket) {
+		try {
+			Client.socket.close();
 			console.log("Client socket closed.");
-		} catch(error)
-		{
+		} catch (error) {
 			console.log(error);
 		}
 
-		client.Connected = false;
+		Client.Connected = false;
 		SetError("Not connected to master server.");
 	}
 };
 
-Client.prototype.Send = function(dict, force)
-{
+Client.Send = function (dict, force) {
 	if (force == null) force = true;
-	
-	if (this.Connected || force)
-	{
-		this.socket.send(JSON.stringify(dict));
+
+	if (Client.Connected || force) {
+		Client.socket.send(JSON.stringify(dict));
 	}
+	
+	SetError("");
 };
 
-Client.prototype.OnOpen = function (event)
+Client.OnOpen = function (event)
 {
 	console.log("OnOpen, object object follows:");
 	console.log(event);
 
 	var room = queryString("room");
-	
-	if (name == "")
-		name = CookiesGet("name");
-	if (room == "")
-		room = CookiesGet("room");
 
-	client.Send({
+	if (name == "")
+		name = Cookies.Get("name");
+	if (room == "")
+		room = Cookies.Get("room");
+
+	Client.Send({
 		intent: "connect",
 		name: name,
 		room: room
 	});
 };
 
-Client.prototype.OnClose = function(event)
-{
+Client.OnClose = function (event) {
 	console.log("OnClose, event object follows:");
 	console.log(event);
 
 	var reason = "dc code " + event.code;
 	ShowOverlay("Lost connection to the master server. (reason: " + reason + ")");
-	client.Connected = false;
+	Client.Connected = false;
 };
 
-Client.prototype.OnMessage = function(event)
-{
+Client.OnMessage = function (event) {
 	console.log("OnMessage, event object follows:");
 	console.log(event);
 
 	var data = $.parseJSON(event.data);
 
-	switch (data.intent)
-	{
+	switch (data.intent) {
 		case "chat":
 			{
-				ChatWrite(data.message, data.color, data.name, data.nameColor);
+				Chat.Write(data.message, data.color, data.name, data.nameColor);
 
 				break;
 			}
 		case "connectResult":
 			{
-				if (!data.success)
-				{
-					window.client.Disconnect();
+				if (!data.success) {
+					window.Client.Disconnect();
 					clearTimeout(window.failTimeout);
 					ShowOverlay("Not allowed to connect, reason: " + data.reason);
 					break;
@@ -114,72 +100,69 @@ Client.prototype.OnMessage = function(event)
 				clearTimeout(window.failTimeout);
 				HideOverlay();
 
-				ChatWriteMotd();
+				Chat.WriteMotd();
 
-				client.ClientName = data.myName;
-				client.Connected = true;
-				client.ID = data.id;
+				Client.ClientName = data.myName;
+				Client.Connected = true;
+				Client.ID = data.id;
 				break;
 			}
 		case "newRoom":
 			{
-				ChatClear();
-				PlaylistClear();
-				UserListClear();
+				Chat.Clear();
+				Playlist.Clear();
+				UserList.Clear();
 
-				for (var i = 0; i < data.history.length; ++i)
-				{
-					ChatWrite(data.history[i], "rgb(107, 107, 107)");
+				for (var i = 0; i < data.history.length; ++i) {
+					Chat.Write(data.history[i], "rgb(107, 107, 107)");
 				}
 
 				if (data.print)
-					ChatWrite(data.message, data.color);
+					Chat.Write(data.message, data.color);
 
-				client.SetOwner(data.owner);
-				client.SetPrivileged(false);
-				client.RoomName = data.roomName;
-				
-				RoomListUpdate();
+				Client.SetOwner(data.owner);
+				Client.SetPrivileged(false);
+				Client.RoomName = data.roomName;
 
-				UserListClear();
-				for (var i = 0; i < data.users.length; ++i)
-				{
-					UserListAdd(data.users[i][0], data.users[i][1]);
+				RoomList.Update();
+
+				UserList.Clear();
+				for (var i = 0; i < data.users.length; ++i) {
+					UserList.Add(data.users[i][0], data.users[i][1]);
 				}
 
 				break;
 			}
 		case "newName":
 			{
-				client.ClientName = data.newName;
-				if (data.permanent)
-				{
+				Client.ClientName = data.newName;
+				if (data.permanent) {
 					$("#settingsNameBox").val(data.newName);
-					CookiesSet("name", data.newName);
+					Cookies.Set("name", data.newName);
 				}
 				break;
 			}
 		case "setVideo":
 			{
-				client.CurrentVideoID = data.videoId;
-				client.CurrentUniqueID = data.uniqueId;
+				Client.CurrentVideoID = data.videoId;
+				Client.CurrentUniqueID = data.uniqueId;
 
-				YTSetVideo(data.videoId, data.elapsed);
-				YTSetState(data.state);
+				YT.SetVideo(data.videoId, data.elapsed);
+				YT.SetState(data.state);
 				if (data.message != undefined)
-					ChatWrite(data.message, data.color);
+					Chat.Write(data.message, data.color);
 
-				PlaylistSetCurrentInfo(data.title, "http://i2.ytimg.com/vi/" + data.videoId + "/hqdefault.jpg", TextFormatting.Linkify(data.description).replace(/\n/g, "<br/>"));
-				PlaylistRemove(data.uniqueId);
+				Playlist.SetCurrentInfo(data.title, "http://i2.ytimg.com/vi/" + data.videoId + "/hqdefault.jpg", TextFormatting.Linkify(data.description).replace(/\n/g, "<br/>"));
+				Playlist.Remove(data.uniqueId);
 
 				break;
 			}
 		case "setVideoState":
 			{
-				client.CurrentVideoState = data.state;
-				YTSetState(data.state);
+				Client.CurrentVideoState = data.state;
+				YT.SetState(data.state);
 				if (data.elapsed != -1)
-					YTSeek(data.elapsed);
+					YT.Seek(data.elapsed);
 				break;
 			}
 		case "videoMessage":
@@ -189,55 +172,54 @@ Client.prototype.OnMessage = function(event)
 			}
 		case "disconnect":
 			{
-				client.Disconnect();
+				Client.Disconnect();
 				ShowOverlay(data.message, data.color);
 				break;
 			}
 		case "updateOwnership":
 			{
-				client.SetOwner(data.owner);
+				Client.SetOwner(data.owner);
 				break;
 			}
 		case "syncVideo":
 			{
-				if (Math.abs(YTGetElapsed() - data.elapsed) > parseFloat(CookiesGet("MaxDesync", "3")))
-					YTSeek(data.elapsed);
-				
-				if (YTGetState() == 1)
-					YTSetState(data.state);
+				if (Math.abs(YT.GetElapsed() - data.elapsed) > parseFloat(Cookies.Get("MaxDesync", "3")))
+					YT.Seek(data.elapsed);
+
+				if (YT.GetState() == 1)
+					YT.SetState(data.state);
 
 				break;
 			}
 		case "addVideo":
 			{
-				PlaylistAdd(data.title, data.author, data.length, data.videoId, data.uniqueId, data.channelImage);
+				Playlist.Add(data.title, data.author, data.length, data.videoId, data.uniqueId, data.channelImage);
 
 				break;
 			}
 		case "getPublicRooms":
 			{
-				RoomListClear();
+				RoomList.Clear();
 
-				for (var i = 0; i < data.rooms.length; ++i)
-				{
-					RoomListAdd(data.rooms[i][0], data.rooms[i][1]);
+				for (var i = 0; i < data.rooms.length; ++i) {
+					RoomList.Add(data.rooms[i][0], data.rooms[i][1]);
 				}
 
 				break;
 			}
 		case "addUser":
 			{
-				UserListAdd(data.id, data.name);
+				UserList.Add(data.id, data.name);
 				break;
 			}
 		case "removeUser":
 			{
-				UserListRemove(data.id);
+				UserList.Remove(data.id);
 				break;
 			}
 		case "updatePrivileged":
 			{
-				client.SetPrivileged(data.privileged);
+				Client.SetPrivileged(data.privileged);
 				break;
 			}
 		default:
@@ -247,58 +229,51 @@ Client.prototype.OnMessage = function(event)
 	}
 };
 
-Client.prototype.OnError = function(event)
-{
+Client.OnError = function (event) {
 	console.log("OnError, event object follows:");
 	console.log(event);
 	ShowOverlay("WebSocket error! Check console output for info.");
 
-	client.Connected = this.readyState == 1;
+	Client.Connected = Client.readyState == 1;
 };
 
-Client.prototype.SendNewState = function(state)
-{
-	client.Send({
+Client.SendNewState = function (state) {
+	Client.Send({
 		intent: "setVideoState",
 		state: state,
-		elapsed: YTGetElapsed()
+		elapsed: YT.GetElapsed()
 	});
 };
 
-Client.prototype.SetNameColorFromDiv = function(div)
-{
+Client.SetNameColorFromDiv = function (div) {
 	var jq = $(div); // jq = jquery object of div
-	client.Send({
+	Client.Send({
 		intent: "setNameColor",
 		color: jq.css("background-color")
 	});
-	
+
 	$("#nameColorChooser .selected").removeClass("selected");
 	jq.addClass("selected");
 };
 
-Client.prototype.SetOwner = function (isOwner)
-{
-	client.Owner = isOwner;
-	
+Client.SetOwner = function (isOwner) {
+	Client.Owner = isOwner;
+
 	var button = $("#roomSettingsButton");
-	if (isOwner)
-	{
+	if (isOwner) {
 		button.animate({ opacity: "1" }, 500);
 		button.css("cursor", "");
 	}
-	else
-	{
+	else {
 		button.animate({ opacity: "0.25" }, 500);
 		button.css("cursor", "auto");
 	}
-}
-Client.prototype.SetPrivileged = function (privileged)
-{
-	client.Privileged = privileged;
-}
+};
 
-Client.prototype.IsPrivileged = function ()
-{
-	return client.Owner || client.Privileged;
-}
+Client.SetPrivileged = function (privileged) {
+	Client.Privileged = privileged;
+};
+
+Client.IsPrivileged = function () {
+	return Client.Owner || Client.Privileged;
+};

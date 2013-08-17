@@ -113,7 +113,7 @@
 				<tr>
 					<td title="The preferred video quality that will be chosen for videos that support it.">Preferred quality</td>
 					<td>
-						<select id="settingsPreferredQuality">
+						<select id="settingsPreferredQuality" style="width:100px;">
 							<option value="default">Default</option>
 							<option value="highres">Best available</option>
 							<option value="hd1080">1080p</option>
@@ -127,7 +127,7 @@
 				<tr>
 					<td title="Max allowed seconds to differ between owner and you.">Max desync</td>
 					<td>
-						<select id="settingsMaxDesync">
+						<select id="settingsMaxDesync" style="width:100px;">
 							<option value="1">1 Second</option>
 							<option value="2">2 Seconds</option>
 							<option value="3" selected="selected">3 Seconds</option>
@@ -140,15 +140,15 @@
 					<td title="The color of your name.">Name color</td>
 					<td>
 						<div id="nameColorChooser">
-							<div class="nameColor selected" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(117, 117, 117);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 79, 124);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(136, 86, 86);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(132, 136, 86);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(35, 126, 35);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 136, 132);"></div>
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(130, 86, 136);"></div>
+							<div class="nameColor selected" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(117, 117, 117);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 79, 124);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(136, 86, 86);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(132, 136, 86);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(35, 126, 35);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 136, 132);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(130, 86, 136);"></div>
 							<br />
-							<div class="nameColor" onclick="client.SetNameColorFromDiv(this);" style="background-color: rgb(115, 157, 13);"></div>
+							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(115, 157, 13);"></div>
 						</div>
 					</td>
 				</tr>

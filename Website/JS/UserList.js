@@ -1,16 +1,18 @@
-﻿var AllUsers = { };
+﻿UserList = {};
 
-function UserListAdd(id, name)
-{
-	AllUsers[id] = name;
-}
+UserList.AllUsers = {};
 
-function UserListRemove(id)
+UserList.Add = function(id, name)
 {
-	delete AllUsers[id];
-}
+	UserList.AllUsers[id] = name;
+};
 
-function UserListClear()
+UserList.Remove = function(id)
 {
-	AllUsers = { };
-}
+	delete UserList.AllUsers[id];
+};
+
+UserList.Clear = function()
+{
+	UserList.AllUsers = {};
+};

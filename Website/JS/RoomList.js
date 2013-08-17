@@ -1,23 +1,25 @@
-﻿function RoomListClear()
+﻿RoomList = {};
+
+RoomList.Clear = function()
 {
 	$("#roomsTable tr:not(.tableHeader)").remove();
-}
+};
 
-function RoomListAdd(name, count)
+RoomList.Add = function(name, count)
 {
 	var attr = "";
 	
-	if (client.RoomName == name)
+	if (Client.RoomName == name)
 		attr = "class=\"currentRoom\"";
 
-	$("#roomsTable").append("<tr " + attr + " onclick=\"RoomListOnClick('" + name + "');\"><td>" + name + "</td><td>" + count + "</td></tr>");
-}
+	$("#roomsTable").append("<tr " + attr + " onclick=\"RoomList.OnClick('" + name + "');\"><td>" + name + "</td><td>" + count + "</td></tr>");
+};
 
-function RoomListOnClick(name)
+RoomList.OnClick = function(name)
 {
-	if (client.RoomName == null || (client.RoomName != name && confirm("Are you sure you want to leave the current room?")))
+	if (Client.RoomName == null || (Client.RoomName != name && confirm("Are you sure you want to leave the current room?")))
 	{
-		client.Send(
+		Client.Send(
 			{
 				intent: "chat",
 				message: "/room " + name
@@ -25,11 +27,11 @@ function RoomListOnClick(name)
 
 		$("#roomsDialog").dialog("close");
 	}
-}
+};
 
-function RoomListUpdate()
+RoomList.Update = function()
 {
-	RoomListClear();
-	RoomListAdd("Getting rooms...", "");
-	client.Send({ intent: "getPublicRooms" });
-}
+	RoomList.Clear();
+	RoomList.Add("Getting rooms...", "");
+	Client.Send({ intent: "getPublicRooms" });
+};

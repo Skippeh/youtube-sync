@@ -1,31 +1,33 @@
-﻿var ChatHistory = [];
-var ChatHistoryPosition;
+﻿Chat = {};
 
-function ChatWriteMotd()
+Chat.ChatHistory = [];
+Chat.HistoryPosition = 0;
+
+Chat.WriteMotd = function ()
 {
 	var chat = $("#chatText");
 
 	chat.append("<span style=\"color:rgb(180, 180, 180);\"><u>Never tell your password to anyone.</u></span>");
-	if (client.RoomName == null)
+	if (Client.RoomName == null)
 		chat.append("<br/><span style=\"color:rgb(180, 180, 180);\">Type /room [room name] to begin.</span><br/>");
 	else
 		chat.append("<br/>");
-}
+};
 
-function ChatWrite(text, color, name, nameColor)
+Chat.Write = function (text, color, name, nameColor)
 {
 	var originalText = text;
 	var originalName = name;
-	text = ChatSecureText(text);
+	text = Chat.SecureText(text);
 	text = TextFormatting.FormatText(text);
 	
 	var chat = $("#chatText");
 	
 	if (name != undefined)
 	{
-		name = ChatSecureText(name);
+		name = Chat.SecureText(name);
 		
-		if (name == client.ClientName && color == "#FFF")
+		if (name == Client.ClientName && color == "#FFF")
 			color = "#BBB";
 
 		chat.append("<span style=\"color:" + nameColor + ";font-weight:bold;\">" + name + "</span>: <span style=\"color:" + color + ";\">" + text + "</span>");
@@ -37,16 +39,16 @@ function ChatWrite(text, color, name, nameColor)
 
 	chat.append("<br/>");
 
-	ChatScrollToBottom();
+	Chat.ScrollToBottom();
 	
 	if (name != undefined) // It's a user submitted chat message not send by myself.
 	{
-		if (CookiesGet("ChatSounds", "1") == "1" && !WindowFocused)
+		if (Cookies.Get("ChatSounds", "1") == "1" && !WindowFocused)
 		{
 			document.getElementById("audioMessageReceived").play();
 		}
 
-		if (CookiesGet("ChatNotifications", "1") == "1" && !WindowFocused && window.webkitNotifications)
+		if (Cookies.Get("ChatNotifications", "1") == "1" && !WindowFocused && window.webkitNotifications)
 		{
 			console.log("Showing notification: " + webkitNotifications.checkPermission());
 
@@ -69,69 +71,69 @@ function ChatWrite(text, color, name, nameColor)
 			}
 		}
 	}
-}
+};
 
-function ChatSecureText(text)
+Chat.SecureText = function(text)
 {
 	text = text.replace(/</g, "&lt;");
 	text = text.replace(/>/g, "&gt;");
 
 	return text;
-}
+};
 
-function ChatClearInput()
+Chat.ClearInput = function()
 {
 	$("#chatInputBox").val("");
 }
 
-function ChatClear()
+Chat.Clear = function()
 {
 	$("#chatText").text("");
-	ChatWriteMotd();
-}
+	Chat.WriteMotd();
+};
 
-function ChatScrollToBottom()
+Chat.ScrollToBottom = function()
 {
 	var chatDiv = $("#chat");
 	chatDiv.animate(
 		{
 			scrollTop: chatDiv[0].scrollHeight - chatDiv.height()
 		}, 0); // 0 ms to animate to this state. (i know)
-}
+};
 
-function ChatAddHistory(message)
+Chat.AddHistory = function(message)
 {
-	ChatHistory.unshift(message);
-}
+	Chat.ChatHistory.unshift(message);
+};
 
-function ChatGetHistory(direction)
+Chat.GetHistory = function(direction)
 {
-	if (ChatHistory.length == 0)
+	if (Chat.ChatHistory.length == 0)
 		return "";
 
 	if (direction == "up")
 	{
-		if (ChatHistoryPosition + 1 < ChatHistory.length)
-			ChatHistoryPosition += 1;
+		if (Chat.HistoryPosition + 1 < Chat.ChatHistory.length)
+			Chat.HistoryPosition += 1;
 	}
 	else if (direction == "down")
 	{
-		if (ChatHistoryPosition - 1 >= 0)
-			ChatHistoryPosition -= 1;
+		if (Chat.HistoryPosition - 1 >= 0)
+			Chat.HistoryPosition -= 1;
 		else
 		{
-			ChatResetHistoryPos();
+			Chat.ResetHistoryPos();
 			return "";
 		}
 	}
 
-	return ChatHistory.slice()[ChatHistoryPosition];
-}
+	return Chat.ChatHistory.slice()[Chat.HistoryPosition];
+};
 
-function ChatResetHistoryPos()
+Chat.ResetHistoryPos = function()
 {
-	ChatHistoryPosition = -1;
-}
+	Chat.HistoryPosition = -1;
+};
 
 Number.prototype.formatDate = function()
 {

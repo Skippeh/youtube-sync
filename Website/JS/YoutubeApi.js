@@ -1,85 +1,99 @@
-﻿var ytPlayer = null;
+﻿YT = {};
 
-function YTSeek(seconds)
+YT.Player = null;
+
+YT.Seek = function(seconds)
 {
 	console.log("YTSeek(" + seconds + ")");
-	if (ytPlayer)
-		ytPlayer.seekTo(seconds, true); // Allow seeking to unbuffered areas
-}
+	if (YT.Player)
+		YT.Player.seekTo(seconds, true); // Allow seeking to unbuffered areas
+};
 
-function YTPlay()
+YT.Play = function()
 {
-	if (ytPlayer)
-		ytPlayer.playVideo();
-}
+	if (YT.Player)
+		YT.Player.playVideo();
+};
 
-function YTPause()
+YT.Pause = function()
 {
-	if (ytPlayer)
-		ytPlayer.pauseVideo();
-}
+	if (YT.Player)
+		YT.Player.pauseVideo();
+};
 
-function YTStop()
+YT.Stop = function()
 {
-	if (ytPlayer)
-		ytPlayer.stopVideo();
-}
+	if (YT.Player)
+		YT.Player.stopVideo();
+};
 
-function YTSetVideo(videoId, elapsed)
+YT.SetVideo = function(videoId, elapsed)
 {
 	if (!elapsed)
 		elapsed = 0;
 
-	if (ytPlayer)
-		ytPlayer.loadVideoById(videoId, elapsed, YTGetQuality());
-}
+	if (YT.Player)
+		YT.Player.loadVideoById(videoId, elapsed, YT.GetQuality());
+};
 
-function YTSetState(state)
+YT.SetState = function(state)
 {
-	if (!ytPlayer)
+	if (!YT.Player)
 		return;
 	
 	if (state == 0) // Stop
-		YTStop();
+		YT.Stop();
 	else if (state == 1) // Play
-		YTPlay();
+		YT.Play();
 	else if (state == 2) // Pause
-		YTPause();
+		YT.Pause();
 	else if (state == 3) // Buffering
-		YTPause();
-}
+		YT.Pause();
+};
 
-function YTGetState()
+YT.GetState = function()
 {
-	if (!ytPlayer)
+	if (!YT.Player)
 		return -1;
 
-	return ytPlayer.getPlayerState();
-}
+	return YT.Player.getPlayerState();
+};
 
-function YTSetQuality(quality)
+YT.SetQuality = function(quality)
 {
-	if (ytPlayer)
-		ytPlayer.setPlaybackQuality(quality);
-}
+	if (YT.Player)
+		YT.Player.setPlaybackQuality(quality);
+};
 
-function YTGetQuality()
+YT.GetQuality = function()
 {
-	return CookiesGet("quality", "hd720");
-}
+	return Cookies.Get("quality", "hd720");
+};
+
+// Returns true if the url is a valid youtube link.
+YT.CheckURL = function(url)
+{
+	return /((http|https):\/\/)?(www\.)?(youtube\.com)(\/)?([a-zA-Z0-9\-\.]+)\/?/.test(url) && queryString("v", url) != "";
+};
+
+YT.GetElapsed = function()
+{
+	if (YT.Player)
+		return YT.Player.getCurrentTime();
+
+	return 0;
+};
 
 // Youtube api events
-function onYouTubePlayerReady(playerId)
-{
-	ytPlayer = document.getElementById("ytPlayer");
-	ytPlayer.addEventListener("onStateChange", "onYoutubePlayerStateChanged");
+function onYouTubePlayerReady(playerId) {
+	YT.Player = document.getElementById("YT.Player");
+	YT.Player.addEventListener("onStateChange", "onYoutubePlayerStateChanged");
 	console.log("Youtube player ready");
 
-	client.Connect();
+	Client.Connect();
 }
 
-function onYoutubePlayerStateChanged(newState)
-{
+function onYoutubePlayerStateChanged(newState) {
 	/*
 		-1 (unstarted)
 		0 (ended)
@@ -89,31 +103,14 @@ function onYoutubePlayerStateChanged(newState)
 		5 (video cued)
 	*/
 
-	if (client.IsPrivileged())
-	{
-		console.log("NewState/ClientState: " + newState + " - " + client.CurrentVideoState);
-		if (newState != -1)
-		{
-			client.SendNewState(newState);
+	if (Client.IsPrivileged()) {
+		console.log("NewState/ClientState: " + newState + " - " + Client.CurrentVideoState);
+		if (newState != -1) {
+			Client.SendNewState(newState);
 		}
 	}
-	
-	if (newState == 0)
-	{
-		PlaylistClearCurrentInfo();
+
+	if (newState == 0) {
+		Playlist.ClearCurrentInfo();
 	}
-}
-
-// Returns true if the url is a valid youtube link.
-function YTCheckURL(url)
-{
-	return /((http|https):\/\/)?(www\.)?(youtube\.com)(\/)?([a-zA-Z0-9\-\.]+)\/?/.test(url) && queryString("v", url) != "";
-}
-
-function YTGetElapsed()
-{
-	if (ytPlayer)
-		return ytPlayer.getCurrentTime();
-
-	return 0;
 }
