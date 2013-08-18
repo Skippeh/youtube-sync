@@ -174,7 +174,7 @@ span.footer
 	background: linear-gradient(to bottom, #121a28 0%,#090f16 100%); /* W3C */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#121a28', endColorstr='#090f16',GradientType=0 ); /* IE6-9 */
 
-	overflow: auto;
+	overflow: hidden;
 }
 
 #rightSidebar
@@ -205,14 +205,14 @@ span.footer
 	-webkit-box-shadow: 0px 0px 50px 1px rgba(0, 0, 0, 0.8);
 	box-shadow: 0px 0px 50px 1px rgba(0, 0, 0, 0.8);
 
-	overflow: auto;
+	overflow: hidden;
 }
 
 #rightSidebar .chat
 {
-	margin: 13px 0 0 0;
+	margin: 5px 0px 0px 0;
 	line-height: 16px;
-	height: calc(100% - 45px);
+	height: calc(100% - 32px);
 }
 
 #chatText
@@ -241,7 +241,7 @@ a:hover
 
 #chat
 {
-	overflow: auto;
+	/*overflow: auto;*/
 	word-wrap: break-word;
 }
 
@@ -296,7 +296,6 @@ a:hover
 {
 	color: #FFF;
 	text-align: center;
-	line-height: 540px;
 }
 
 #addVideoButton

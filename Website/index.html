@@ -1,12 +1,12 @@
 ﻿<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head runat="server">
+	<head>
 		<title>Youtube Sync</title>
 		<link href="style.css" rel="stylesheet" />
 		<link href="gradient.css" rel="stylesheet" />
-		<!--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />-->
 		<link href="css/youtube-sync/jquery-ui-1.10.3.custom.min.css" rel="stylesheet" />
+		<link href="css/trackpad-scroll-emulator.css" rel="stylesheet" />
 		<!--[if gte IE 9]>
 			<style type="text/css">
 				.gradient {
@@ -18,7 +18,9 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 		<script src="JS/jquery-ui-1.10.3.custom.min.js"></script>
 		<script src="JS/jquery.watermark.min.js"></script>
+		<script src="JS/jquery.trackpad-scroll-emulator.js"></script>
 		<script src="JS/swfobject.js"></script>
+
 		<script src="JS/Globals.js"></script>
 		<script src="JS/Cookies.js"></script>
 		<script src="JS/Client.js"></script>
@@ -62,14 +64,16 @@
 		</div>
 	
 		<div id="rightSidebar">
-			<div id="chat" class="chat">
-				<span id="chatText"></span>
+			<div class="tse-scrollable scrollbar" style="width:100%; height:calc(100% - 32px);">
+				<div class="tse-content">
+					<div id="chat" class="chat">
+						<span id="chatText"></span>
+					</div>
+				</div>
 			</div>
 			<div id="chatInput">
 				<input type="text" id="chatInputBox"/>
-				<span id="chatInputSendButton" style="cursor:pointer;">
-					Send
-				</span>
+				<span id="chatInputSendButton" style="cursor:pointer;">Send</span>
 			</div>
 		</div>
 
@@ -82,7 +86,7 @@
 			<span id="addVideoButton">Add</span>
 			<span id="videoUrlError"></span>
 
-			<span class="footer" style="cursor:pointer;" id="aboutText">Youtube Sync v1</span>
+			<span class="footer" style="cursor:pointer;" id="aboutText">About & GitHub</span>
 			<span class="footer" id="errorText"></span>
 		</div>
 		
@@ -90,7 +94,7 @@
 		
 		<div id="aboutDialog" class="dialogWindow">
 			<span>
-				Created by Jonathan Lindahl.
+				Created by Jonathan Lindahl
 				<br/>
 				<br/>
 				<span style="bottom: 10px; position:absolute;">

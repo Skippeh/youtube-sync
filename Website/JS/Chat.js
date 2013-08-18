@@ -71,6 +71,8 @@ Chat.Write = function (text, color, name, nameColor)
 			}
 		}
 	}
+	
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
 Chat.SecureText = function(text)
@@ -84,17 +86,18 @@ Chat.SecureText = function(text)
 Chat.ClearInput = function()
 {
 	$("#chatInputBox").val("");
-}
+};
 
 Chat.Clear = function()
 {
 	$("#chatText").text("");
 	Chat.WriteMotd();
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
 Chat.ScrollToBottom = function()
 {
-	var chatDiv = $("#chat");
+	var chatDiv = $("#rightSidebar .tse-scroll-content");
 	chatDiv.animate(
 		{
 			scrollTop: chatDiv[0].scrollHeight - chatDiv.height()

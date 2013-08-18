@@ -103,6 +103,10 @@ function main()
 	$(window).blur(function() {
 		WindowFocused = false;
 	});
+	
+	$(".scrollbar").TrackpadScrollEmulator({
+		
+	});
 
 	ViewportResized(); // don't judge me
 }
@@ -309,6 +313,8 @@ function ViewportResized()
 				width: $(window).width() - 312
 			}, 0);
 	}
+	
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 }
 
 function SetError(text)
