@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Cache
 		private static string GetFreshJsonString(string videoId)
 		{
 			Console.WriteLine("Downloading fresh data for id " + videoId + ".");
-			return webClient.DownloadString("https://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=json");
+			return webClient.DownloadString((Globals.APIUseHttps ? "https" : "http") + "://gdata.youtube.com/feeds/api/videos/" + videoId + "?v=2&alt=json");
 		}
 
 		/// <summary>Verifies the local cache data, and downloads new data if no data is found, or it's expired.</summary>
