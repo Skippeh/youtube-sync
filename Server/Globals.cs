@@ -35,7 +35,7 @@ namespace Server
 				MaxAllowedRoomsBeforeCache = (int)saveFile.Get<long>("MaxAllowedRoomsBeforeCache", 20);
 				MyLocation = saveFile.Get<string>("ServerLocation", "ws://YourServerLocation:8090");
 				GoogleAPIKey = saveFile.Get<string>("GoogleAPIKey", "");
-				APIUseHttps = saveFile.Get<bool> ("APIUseHttps", true);
+				APIUseHttps = saveFile.Get<bool>("APIUseHttps", true);
 				saveFile.SaveKeyValues();
 			}
 			catch (InvalidCastException)
