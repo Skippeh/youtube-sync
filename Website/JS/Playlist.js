@@ -15,16 +15,20 @@ Playlist.Add = function(title, author, length, videoId, uniqueId, channelImage)
 			"<span class=\"videoDetails\">Uploaded by " + author + " " + length + "</span>" +
 		"</div>"
 	);
+	
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
 Playlist.Remove = function(uniqueId)
 {
 	$("#playlistEntry_" + uniqueId).remove();
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
 Playlist.Clear = function()
 {
 	$("#playlistEntries").html("");
+	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
 Playlist.SetCurrentInfo = function(title, videoImage, description)
