@@ -472,6 +472,9 @@ function SetVideoURLError(text)
 
 function undef(obj)
 {
+	if (obj == null)
+		return true;
+	
 	return typeof (obj) === "undefined";
 }
 
