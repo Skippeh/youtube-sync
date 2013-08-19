@@ -13,7 +13,7 @@ Cookies.Set = function(name, value)
 // Code taken from http://www.w3schools.com/js/js_cookies.asp
 Cookies.Get = function(name, defaultValue)
 {
-	if (defaultValue == undefined)
+	if (undef(defaultValue))
 		defaultValue = "";
 	name = encodeURI(name);
 	

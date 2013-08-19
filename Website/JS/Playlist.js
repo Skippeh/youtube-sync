@@ -17,7 +17,6 @@ Playlist.Add = function(title, author, length, videoId, uniqueId, channelImage)
 	);
 	
 	var elm = $("#playlistEntry_" + uniqueId);
-	//elm.css("background-color", "#FF0");
 	elm.animate({ "background-color": "rgba(0,0,0,0)" }, 350);
 	
 	$(".scrollbar").TrackpadScrollEmulator("recalculate");
@@ -37,7 +36,7 @@ Playlist.Clear = function()
 
 Playlist.SetCurrentInfo = function(title, videoId, description)
 {
-	$("#currentVideo").stop().animate({ opacity: "1" }, 500);
+	$("#currentVideo").stop().animate({ opacity: "1" }, animspd(500));
 
 	var link = "http://www.youtube.com/watch?v=" + videoId;
 	$("#currentVideoTitle").html("<a style='text-decoration: none;' href='" + link + "' target='_blank'>" + title + "</a>");
@@ -48,7 +47,7 @@ Playlist.SetCurrentInfo = function(title, videoId, description)
 
 Playlist.ClearCurrentInfo = function()
 {
-	$("#currentVideo").stop().animate({ opacity: "0.5" }, 500);
+	$("#currentVideo").stop().animate({ opacity: "0.5" }, animspd(500));
 
 	$("#currentVideoTitle").html("No video playing");
 	$("#currentVideoDescription").html("");

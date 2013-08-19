@@ -1,5 +1,6 @@
 ﻿var failTimeout;
 var WindowFocused = true;
+var AnimationsEnabled = true;
 
 function main()
 {
@@ -107,6 +108,11 @@ function main()
 	$(".scrollbar").TrackpadScrollEmulator({
 		
 	});
+	
+	if (Cookies.Get("AnimationsEnabled", Globals.AnimationsEnabledDefault) == "1")
+		AnimationsEnabled = true;
+	else
+		AnimationsEnabled = false;
 
 	ViewportResized(); // don't judge me
 }
@@ -125,38 +131,38 @@ function ToggleChatVisibility()
 		chatToggleButton.stop().animate(
 			{
 				opacity: "1"
-			}, 250);
+			}, animspd(250));
 
 		playerDiv.stop().animate(
 			{
 				width: $(window).width() - (leftOpacity == "1" ? 614 : 312)
-			}, 250);
+			}, animspd(250));
 
 		//leftSidebar.stop().animate(
 		//	{
 		//		width: $(window).width() - 322
-		//	}, 250);
+		//	}, animspd(250));
 
-		chatDiv.stop().fadeIn(250);
+		chatDiv.stop().fadeIn(animspd(250));
 	}
 	else
 	{
 		chatToggleButton.stop().animate(
 			{
 				opacity: "0.2"
-			}, 250);
+			}, animspd(250));
 
 		playerDiv.stop().animate(
 			{
 				width: $(window).width() - (leftOpacity == "1" ? 302 : 0)
-			}, 250);
+			}, animspd(250));
 
 		//leftSidebar.stop().animate(
 		//	{
 		//		width: $(window).width() - 11
-		//	}, 250);
+		//	}, animspd(250));
 
-		chatDiv.stop().fadeOut(250);
+		chatDiv.stop().fadeOut(animspd(250));
 	}
 
 	// Scroll the chat to the bottom because the scroll position is reset when the div is hidden.
@@ -176,36 +182,36 @@ function TogglePlaylistVisibility()
 		playlistToggleButton.stop().animate(
 			{
 				opacity: "1"
-			}, 250);
+			}, animspd(250));
 
 		playerDiv.stop().animate(
 			{
 				left: 302,
 				width: $(document).width() - (rightOpacity == "1" ? 614 : 302)
-			}, 250);
+			}, animspd(250));
 
 		$("#leftSidebar").stop().animate(
 			{
 				opacity: 1
-			}, 250);
+			}, animspd(250));
 	}
 	else
 	{
 		playlistToggleButton.stop().animate(
 			{
 				opacity: "0.2"
-			}, 250);
+			}, animspd(250));
 
 		playerDiv.stop().animate(
 			{
 				left: 0,
 				width: $(document).width() - (rightOpacity == "1" ? 312 : 0)
-			}, 250);
+			}, animspd(250));
 
 			$("#leftSidebar").stop().animate(
 				{
 					opacity: 0
-				}, 250);
+				}, animspd(250));
 	}
 }
 
@@ -214,7 +220,7 @@ function FadeInVideoURL()
 	$("#videoUrl").stop().animate(
 		{
 			"opacity": '1'
-		}, 100);
+		}, animspd(100));
 }
 
 function FadeOutVideoURL()
@@ -225,12 +231,12 @@ function FadeOutVideoURL()
 	$("#videoUrl").stop().animate(
 		{
 			"opacity": '0.1'
-		}, 100);
+		}, animspd(100));
 }
 
 function ShowOverlay(text, color)
 {
-	if (color == undefined) color = "#FFF";
+	if (undef(color)) color = "#FFF";
 
 	var overlay = $("#overlay");
 	overlay.html("<span style=\"color:" + color + ";\">" +text + "</span>");
@@ -304,14 +310,14 @@ function ViewportResized()
 		playerDiv.stop().animate(
 			{
 				width: $(window).width()
-			}, 0);
+			}, animspd(0));
 	}
 	else
 	{
 		playerDiv.stop().animate(
 			{
 				width: $(window).width() - 312
-			}, 0);
+			}, animspd(0));
 	}
 	
 	$(".scrollbar").TrackpadScrollEmulator("recalculate");
@@ -324,7 +330,7 @@ function SetError(text)
 
 function queryString(name, url)
 {
-	if (url == undefined)
+	if (undef(url))
 		url = window.location.search;
 
 	name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -424,11 +430,22 @@ function SaveSettings()
 	Cookies.Set("MaxDesync", $("#settingsMaxDesync").val());
 	Cookies.Set("ChatSounds", $("#settingsPlayChatSounds").prop("checked") == true ? "1" : "0");
 	Cookies.Set("ChatNotifications", $("#settingsShowChatNotifications").prop("checked") == true ? "1" : "0");
+	Cookies.Set("AnimationsEnabled", $("#settingsEnableAnimations").prop("checked") == true ? "1" : "0");
+	AnimationsEnabled = Cookies.Get("AnimationsEnabled") == "1" ? true : false;
 	
-	if (webkitNotifications.checkPermission() == 1 && Cookies.Get("ChatNotifications") == "1")
+	if (!undef(window.webkitNotifications) && Cookies.Get("ChatNotifications") == "1")
 	{
-		webkitNotifications.requestPermission();
-		console.log("Requesting webkit notification permission.");
+		if (window.webkitNotifications.checkPermission() == 1 )
+		{
+			window.webkitNotifications.requestPermission();
+			console.log("Requesting webkit notification permission.");
+		}
+	}
+	else if (!window.webkitNotifications && Cookies.Get("ChatNotifications") == "1")
+	{
+		Cookies.Set("ChatNotifications", "0");
+		alert("Notifications not supported, can't enable.");
+		$("#settingsShowChatNotifications").attr("checked", false);
 	}
 
 	if (Client.ClientName != $("#settingsNameBox").val())
@@ -450,4 +467,17 @@ function SetVideoURLError(text)
 			element.fadeOut(100);
 		}, 5000);
 	});
+}
+
+function undef(obj)
+{
+	return typeof (obj) === "undefined";
+}
+
+function animspd(speed)
+{
+	if (AnimationsEnabled)
+		return speed;
+	
+	return 0;
 }

@@ -147,7 +147,7 @@
 				<tr>
 					<td title="The color of your name.">Name color</td>
 					<td>
-						<div id="nameColorChooser">
+						<div id="nameColorChooser" style="max-width:150px;">
 							<div class="nameColor selected" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(117, 117, 117);"></div>
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 79, 124);"></div>
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(136, 86, 86);"></div>
@@ -155,7 +155,6 @@
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(35, 126, 35);"></div>
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(86, 136, 132);"></div>
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(130, 86, 136);"></div>
-							<br />
 							<div class="nameColor" onclick="Client.SetNameColorFromDiv(this);" style="background-color: rgb(115, 157, 13);"></div>
 						</div>
 					</td>
@@ -170,6 +169,12 @@
 					<td title="If checked, chat notifications will be displayed.">Show chat notifications</td>
 					<td>
 						<input id="settingsShowChatNotifications" type="checkbox"/>
+					</td>
+				</tr>
+				<tr>
+					<td title="If checked, animations will be used. Uncheck this if site appears laggy.">Enable animations</td>
+					<td>
+						<input id="settingsEnableAnimations" type="checkbox"/>
 					</td>
 				</tr>
 			</table>

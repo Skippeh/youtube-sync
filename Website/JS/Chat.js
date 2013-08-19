@@ -23,7 +23,7 @@ Chat.Write = function (text, color, name, nameColor)
 	
 	var chat = $("#chatText");
 	
-	if (name != undefined)
+	if (!undef(name))
 	{
 		name = Chat.SecureText(name);
 		
@@ -41,7 +41,7 @@ Chat.Write = function (text, color, name, nameColor)
 
 	Chat.ScrollToBottom();
 	
-	if (name != undefined) // It's a user submitted chat message not send by myself.
+	if (!undef(name)) // It's a user submitted chat message not send by myself.
 	{
 		if (Cookies.Get("ChatSounds", "1") == "1" && !WindowFocused)
 		{
@@ -101,7 +101,7 @@ Chat.ScrollToBottom = function()
 	chatDiv.animate(
 		{
 			scrollTop: chatDiv[0].scrollHeight - chatDiv.height()
-		}, 0); // 0 ms to animate to this state. (i know)
+		}, animspd(0)); // 0 ms to animate to this state. (i know)
 };
 
 Chat.AddHistory = function(message)

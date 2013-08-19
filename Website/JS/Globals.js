@@ -1,5 +1,6 @@
 ﻿Globals =
 {
 	ServerLocation: "ws://home.skipcast.net:8090",
-	GithubURL: "https://github.com/Skippeh/youtube-sync"
+	GithubURL: "https://github.com/Skippeh/youtube-sync",
+	AnimationsEnabledDefault: "1"
 };

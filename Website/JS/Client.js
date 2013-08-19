@@ -149,7 +149,7 @@ Client.OnMessage = function (event) {
 
 				YT.SetVideo(data.videoId, data.elapsed);
 				YT.SetState(data.state);
-				if (data.message != undefined)
+				if (!undef(data.message))
 					Chat.Write(data.message, data.color);
 
 				Playlist.SetCurrentInfo(data.title, data.videoId, TextFormatting.Linkify(data.description).replace(/\n/g, "<br/>"));
@@ -261,11 +261,11 @@ Client.SetOwner = function (isOwner) {
 
 	var button = $("#roomSettingsButton");
 	if (isOwner) {
-		button.animate({ opacity: "1" }, 500);
+		button.animate({ opacity: "1" }, animspd(500));
 		button.css("cursor", "");
 	}
 	else {
-		button.animate({ opacity: "0.25" }, 500);
+		button.animate({ opacity: "0.25" }, animspd(500));
 		button.css("cursor", "auto");
 	}
 };
