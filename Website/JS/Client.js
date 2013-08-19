@@ -152,7 +152,7 @@ Client.OnMessage = function (event) {
 				if (data.message != undefined)
 					Chat.Write(data.message, data.color);
 
-				Playlist.SetCurrentInfo(data.title, "http://i2.ytimg.com/vi/" + data.videoId + "/hqdefault.jpg", TextFormatting.Linkify(data.description).replace(/\n/g, "<br/>"));
+				Playlist.SetCurrentInfo(data.title, data.videoId, TextFormatting.Linkify(data.description).replace(/\n/g, "<br/>"));
 				Playlist.Remove(data.uniqueId);
 
 				break;

@@ -35,13 +35,15 @@ Playlist.Clear = function()
 	$(".scrollbar").TrackpadScrollEmulator("recalculate");
 };
 
-Playlist.SetCurrentInfo = function(title, videoImage, description)
+Playlist.SetCurrentInfo = function(title, videoId, description)
 {
 	$("#currentVideo").stop().animate({ opacity: "1" }, 500);
 
-	$("#currentVideoTitle").html(title);
+	var link = "http://www.youtube.com/watch?v=" + videoId;
+	$("#currentVideoTitle").html("<a style='text-decoration: none;' href='" + link + "' target='_blank'>" + title + "</a>");
 	$("#currentVideoDescription").html(description);
-	$("#currentVideoImage").attr("src", videoImage);
+	$("#currentVideoImage").attr("src", "http://i2.ytimg.com/vi/" + videoId + "/hqdefault.jpg");
+	$("#currentVideoImageLink").attr("href", link);
 };
 
 Playlist.ClearCurrentInfo = function()
