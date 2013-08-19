@@ -388,6 +388,7 @@ function CreateDialogs()
 	$("#settingsPreferredQuality").val(YT.GetQuality());
 	$("#settingsPlayChatSounds").prop("checked", Cookies.Get("ChatSounds", "1") == "1");
 	$("#settingsShowChatNotifications").prop("checked", Cookies.Get("ChatNotifications", "1") == "1");
+	$("#settingsEnableAnimations").prop("checked", Cookies.Get("AnimationsEnabled", Globals.AnimationsEnabledDefault) == "1");
 	
 	// ----------------------------------------------- Rooms
 	$("#roomsDialog").dialog(
