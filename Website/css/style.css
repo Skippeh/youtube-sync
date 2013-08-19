@@ -76,7 +76,7 @@ span.footer
 	top: 0px;
 	height: 30px;
 	background-color: rgb(27, 35, 48);
-	background-image: url("Images/barGradientTop.png");
+	background-image: url("../Images/barGradientTop.png");
 	background-repeat: repeat-x;
 	left: 0px;
 	right: 0px;
@@ -111,7 +111,7 @@ span.footer
 	bottom: 0px;
 	height: 30px;
 	background-color: rgb(27, 35, 48);
-	background-image: url("Images/barGradientBottom.png");
+	background-image: url("../Images/barGradientBottom.png");
 	background-repeat: repeat-x;
 	left: 0px;
 	right: 0px;
@@ -379,7 +379,7 @@ div .dialogWindow ul
 
 #chatToggleButton
 {
-	background-image: url("Images/chatButton.png");
+	background-image: url("../Images/chatButton.png");
 	width: 30px;
 	height: 30px;
 	padding: 0 5px;
@@ -388,7 +388,7 @@ div .dialogWindow ul
 
 #playlistToggleButton
 {
-	background-image: url("Images/playlistButton.png");
+	background-image: url("../Images/playlistButton.png");
 	width: 30px;
 	height: 30px;
 	padding: 0 5px;
@@ -397,7 +397,7 @@ div .dialogWindow ul
 
 #settingsButton
 {
-	background-image: url("Images/wrenchIcon.png");
+	background-image: url("../Images/wrenchIcon.png");
 	width: 30px;
 	height: 30px;
 	padding: 0 5px;
@@ -406,7 +406,7 @@ div .dialogWindow ul
 
 #roomsDialogButton
 {
-	background-image: url("Images/roomsIcon.png");
+	background-image: url("../Images/roomsIcon.png");
 	width: 30px;
 	height: 30px;
 	padding: 0 5px;
@@ -415,7 +415,7 @@ div .dialogWindow ul
 
 #roomSettingsButton
 {
-	background-image: url("Images/roomSettingsButton.png");
+	background-image: url("../Images/roomSettingsButton.png");
 	width: 30px;
 	height: 30px;
 	padding: 0 5px;
